@@ -1,30 +1,15 @@
 
-from morse import encode
+from morse import decode
+import pytest
 
 
-def test():   # ... --- ...
-    """
-    test encode
-    >>> encode('SOS')
-    '... --- ...'
-    >>> encode(12)
-    Traceback (most recent call last):
-    ...
-    TypeError: 'int' object is not iterable
-    >>> encode('SOS')
-    '... --- ..'
-    >>> '    ' + encode("SOS")
-    ' ... --- ...'
-    >>> encode(12)
-    Traceback (most recent call last):
-    TypeError: 'int' object is not iterable
-    >>> encode(['a']) # doctest: +SKIP
-    Traceback (most recent call last):
-    KeyError: 'a'
-    """
+@pytest.mark.parametrize(
+    "source_string,result",
+    [('... --- ...', 'SOS'),
+     ('SOS', 'SOS'),
+     ('... --- ..', 'SOS'),
+     pytest.param('SOS', 'SOS', marks=pytest.mark.xfail(raises=KeyError))]
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
+)
+def test_decode(source_string, result):
+    assert decode(source_string) == result
